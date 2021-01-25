@@ -1,0 +1,22 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+def link_spider():
+     url= 'https://tasty.co/topic/best-vegetarian'
+     source_code = requests.get(url)
+     plain_text = source_code.text
+     soup = BeautifulSoup(plain_text, 'lxml')
+     for link in soup.find_all('a', {'class':'feed-item analyt-internal-link-subunit'}):
+               test = link.get('href')
+               print(test)
+               ingredient_spider(test)
+
+def ingredient_spider(url):
+     source_code1= requests.get(url)
+     new_text= source_code1.text
+     soup1= BeautifulSoup(new_text, 'lxml')
+     for ingredients in soup1.find_all("li", {"class": "ingredient xs-mb1 xs-mt0"}):
+         print(ingredients.text)
+
+link_spider()
